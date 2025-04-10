@@ -15,7 +15,7 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs: `
             type Query {
-                getOrders: String // Defining a dummy query to get orders
+                getOrders: String
             }
         `,
     resolvers: {
