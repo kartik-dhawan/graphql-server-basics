@@ -12,9 +12,9 @@ Before you begin, ensure you have the following installed:
 ## Installation
 
 1. **Clone the repository**:
-   This step creates a local copy of the project repository on your machine.
+   This step creates a local copy of the project repository on your machine. Make sure to pull from the 'setup' branch.
    ```bash
-   git clone https://github.com/yourusername/graphql-server-basics.git
+   git clone -b setup https://github.com/kartik-dhawan/graphql-server-basics.git
    cd graphql-server-basics
    ```
 
