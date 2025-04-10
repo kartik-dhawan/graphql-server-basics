@@ -15,11 +15,14 @@ const startServer = async () => {
   const server = new ApolloServer({
     typeDefs: `
             type Query {
-                getOrders: String
+                getOrders: ID!
+                exampleQuery: String
             }
         `,
     resolvers: {
-      Query: {}, // Placeholder for resolvers
+      Query: {
+        exampleQuery: () => "This is an example RESPonse", // Resolver for the example query
+      },
     },
   });
 
@@ -31,7 +34,6 @@ const startServer = async () => {
       "/graphql",
       expressMiddleware(server, {
         context: async ({ req, res }) => {
-          console.log("Context - req.body:", req.body); // Logging the request body for debugging
           return { req, res }; // Returning the request and response objects in the context
         },
       })
