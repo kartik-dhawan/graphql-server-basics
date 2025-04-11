@@ -3,6 +3,9 @@ import { ApolloServer } from "@apollo/server"; // Importing ApolloServer for Gra
 import { expressMiddleware } from "@apollo/server/express4"; // Importing expressMiddleware to integrate Apollo with Express
 import { typeDefs } from "./typedefs.ts";
 import resolvers from "./resolvers.ts";
+import dotenv from "dotenv";
+
+dotenv.config(); // ✅ Classic way
 
 const PORT = process.env.PORT || 3002; // Setting the port from environment variable or defaulting to 3002
 

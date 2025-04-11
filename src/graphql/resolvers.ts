@@ -1,11 +1,9 @@
 import { Resolvers } from "../generated/graphql.ts";
+import { postcardQueries } from "./resolvers/postcards.resolver.ts";
 
 export const resolvers: Resolvers = {
   Query: {
-    getOrders: () => {
-      return "ID-27863782-gdkdbbnbn";
-    },
-    exampleQuery: () => "This is an example RESPONSE",
+    ...postcardQueries,
   },
 };
 

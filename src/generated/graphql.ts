@@ -15,11 +15,33 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type FrameSize = {
+  __typename?: 'FrameSize';
+  x?: Maybe<Scalars['Int']['output']>;
+  y?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Postcard = {
+  __typename?: 'Postcard';
+  category: ProductCategory;
+  createdAt?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  price?: Maybe<Scalars['Int']['output']>;
+  productId: Scalars['ID']['output'];
+  size?: Maybe<FrameSize>;
+  stock?: Maybe<Scalars['Int']['output']>;
+  uuid: Scalars['ID']['output'];
+};
+
+export enum ProductCategory {
+  Postcards = 'postcards'
+}
+
 export type Query = {
   __typename?: 'Query';
-  exampleQuery?: Maybe<Scalars['String']['output']>;
-  getAllPostcards?: Maybe<Scalars['String']['output']>;
-  getOrders: Scalars['ID']['output'];
+  getAllPostcards?: Maybe<Array<Postcard>>;
+  getPostcardByID?: Maybe<Array<Postcard>>;
 };
 
 
@@ -94,7 +116,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  FrameSize: ResolverTypeWrapper<FrameSize>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Postcard: ResolverTypeWrapper<Postcard>;
+  ProductCategory: ProductCategory;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
 };
@@ -102,18 +128,41 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  FrameSize: FrameSize;
   ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
+  Postcard: Postcard;
   Query: {};
   String: Scalars['String']['output'];
 };
 
+export type FrameSizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['FrameSize'] = ResolversParentTypes['FrameSize']> = {
+  x?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  y?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type PostcardResolvers<ContextType = any, ParentType extends ResolversParentTypes['Postcard'] = ResolversParentTypes['Postcard']> = {
+  category?: Resolver<ResolversTypes['ProductCategory'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  productId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  size?: Resolver<Maybe<ResolversTypes['FrameSize']>, ParentType, ContextType>;
+  stock?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  uuid?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  exampleQuery?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  getAllPostcards?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  getOrders?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  getAllPostcards?: Resolver<Maybe<Array<ResolversTypes['Postcard']>>, ParentType, ContextType>;
+  getPostcardByID?: Resolver<Maybe<Array<ResolversTypes['Postcard']>>, ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
+  FrameSize?: FrameSizeResolvers<ContextType>;
+  Postcard?: PostcardResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 };
 
