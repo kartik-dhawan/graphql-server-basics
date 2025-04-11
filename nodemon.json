@@ -2,5 +2,5 @@
   "watch": ["src"],
   "ext": "ts,graphql",
   "ignore": ["node_modules"],
-  "exec": "node --loader ts-node/esm src/index.ts"
+  "exec": "node --no-warnings --loader ts-node/esm src/graphql/index.ts"
 }

@@ -1,4 +1,0 @@
-type Query {
-    getOrders: ID!
-    exampleQuery: String
-}
