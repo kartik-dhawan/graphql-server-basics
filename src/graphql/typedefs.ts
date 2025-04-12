@@ -4,6 +4,7 @@ export const typeDefs = gql`
   type Query {
     getAllPostcards: [Postcard!]
     getPostcardByID: [Postcard!]
+    getAllOrders: [Order!]
   }
 
   enum ProductCategory {
@@ -25,5 +26,20 @@ export const typeDefs = gql`
     size: FrameSize
     stock: Int
     uuid: ID!
+  }
+
+  type OrderedPostcards {
+    buyingQuantity: Int
+    uuid: ID!
+  }
+
+  type Order {
+    orderID: ID!
+    orderedAt: String
+    orderStatus: String
+    paymentStatus: Boolean
+    totalAmount: Int
+    orderedPostcardsUUID: [OrderedPostcards!]!
+    postcards: [Postcard!]
   }
 `;

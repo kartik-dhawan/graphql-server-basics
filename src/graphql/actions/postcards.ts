@@ -1,14 +1,20 @@
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  DocumentData,
+  getDocs,
+  query,
+  QuerySnapshot,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firestore/config.ts";
 import { Postcard, ProductCategory } from "../../generated/graphql.ts";
 
-export const fetchPostcards = async (): Promise<Postcard[]> => {
-  const collectionRef = collection(db, "postcards-product-shop");
-
-  const docs = await getDocs(collectionRef);
-
+export const postcardsDataMapper = (
+  docs: QuerySnapshot<DocumentData, DocumentData>
+) => {
   const finalArray: Postcard[] = docs.docs.map((doc) => {
     const record = doc.data();
+
     const size = record.productSize?.split("x");
 
     return {
@@ -28,6 +34,33 @@ export const fetchPostcards = async (): Promise<Postcard[]> => {
       uuid: record.uuid,
     };
   });
+
+  return finalArray;
+};
+
+export const fetchPostcards = async (): Promise<Postcard[]> => {
+  const collectionRef = collection(db, "postcards-product-shop");
+
+  const docs = await getDocs(collectionRef);
+
+  const finalArray: Postcard[] = postcardsDataMapper(docs);
+
+  return finalArray;
+};
+
+export const fetchPostcardsByIds = async (
+  cardIds: string[]
+): Promise<Postcard[]> => {
+  if (!cardIds.length) {
+    return [];
+  }
+
+  const collectionRef = collection(db, "postcards-product-shop");
+
+  const q = query(collectionRef, where("uuid", "in", cardIds));
+  const docs = await getDocs(q);
+
+  const finalArray: Postcard[] = postcardsDataMapper(docs);
 
   return finalArray;
 };
