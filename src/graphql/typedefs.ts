@@ -3,7 +3,7 @@ import { gql } from "graphql-tag";
 export const typeDefs = gql`
   type Query {
     getAllPostcards: [Postcard!]
-    getPostcardByID: [Postcard!]
+    getPostcardByID(id: ID!): [Postcard!]
     getAllOrders: [Order!]
   }
 
