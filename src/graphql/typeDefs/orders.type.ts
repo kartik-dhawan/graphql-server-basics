@@ -3,6 +3,7 @@ import { gql } from "graphql-tag";
 const ordersDefs = gql`
   extend type Query {
     getAllOrders: [Order!]
+    getOrderById(id: ID!): [Order!]
   }
 
   type OrderedPostcards {

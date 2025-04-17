@@ -1,13 +1,23 @@
 import { GraphQLError } from "graphql";
 import { Resolvers } from "../../generated/graphql.ts";
 import { fetchPostcardsByIds } from "../actions/postcards.ts";
-import { fetchOrders } from "../actions/orders.ts";
+import { fetchOrders, fetchSingleOrderById } from "../actions/orders.ts";
 
 export const orderQueries: Resolvers["Query"] = {
   getAllOrders: async (_, __) => {
     try {
       const orders = await fetchOrders();
       return orders;
+    } catch (error) {
+      throw new GraphQLError(
+        error instanceof Error ? error.message : String(error)
+      );
+    }
+  },
+  getOrderById: async (_, { id: orderSearchId }) => {
+    try {
+      const order = await fetchSingleOrderById(orderSearchId);
+      return order;
     } catch (error) {
       throw new GraphQLError(
         error instanceof Error ? error.message : String(error)

@@ -60,7 +60,13 @@ export type Query = {
   __typename?: 'Query';
   getAllOrders?: Maybe<Array<Order>>;
   getAllPostcards?: Maybe<Array<Postcard>>;
+  getOrderById?: Maybe<Array<Order>>;
   getPostcardByID?: Maybe<Array<Postcard>>;
+};
+
+
+export type QueryGetOrderByIdArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -203,6 +209,7 @@ export type PostcardResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getAllOrders?: Resolver<Maybe<Array<ResolversTypes['Order']>>, ParentType, ContextType>;
   getAllPostcards?: Resolver<Maybe<Array<ResolversTypes['Postcard']>>, ParentType, ContextType>;
+  getOrderById?: Resolver<Maybe<Array<ResolversTypes['Order']>>, ParentType, ContextType, RequireFields<QueryGetOrderByIdArgs, 'id'>>;
   getPostcardByID?: Resolver<Maybe<Array<ResolversTypes['Postcard']>>, ParentType, ContextType, RequireFields<QueryGetPostcardByIdArgs, 'id'>>;
 };
 
