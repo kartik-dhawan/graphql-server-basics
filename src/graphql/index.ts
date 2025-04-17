@@ -1,9 +1,9 @@
 import express from "express"; // Importing the express framework for building the server
 import { ApolloServer } from "@apollo/server"; // Importing ApolloServer for GraphQL server functionality
 import { expressMiddleware } from "@apollo/server/express4"; // Importing expressMiddleware to integrate Apollo with Express
-import { typeDefs } from "./typedefs.ts";
-import resolvers from "./resolvers.ts";
 import dotenv from "dotenv";
+import typeDefs from "./typeDefs/index.ts";
+import resolvers from "./resolvers/index.ts";
 
 dotenv.config(); // ✅ Classic way
 

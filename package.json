@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc",
     "start": "npm run compile && node ./dist/index.js",
-    "dev": "nodemon",
+    "serve": "nodemon",
     "generate": "graphql-codegen"
   },
   "keywords": [],

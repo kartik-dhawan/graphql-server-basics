@@ -1,10 +1,9 @@
 import { gql } from "graphql-tag";
 
-export const typeDefs = gql`
+const postcardDefs = gql`
   type Query {
     getAllPostcards: [Postcard!]
     getPostcardByID(id: ID!): [Postcard!]
-    getAllOrders: [Order!]
   }
 
   enum ProductCategory {
@@ -27,19 +26,6 @@ export const typeDefs = gql`
     stock: Int
     uuid: ID!
   }
-
-  type OrderedPostcards {
-    buyingQuantity: Int
-    uuid: ID!
-  }
-
-  type Order {
-    orderID: ID!
-    orderedAt: String
-    orderStatus: String
-    paymentStatus: Boolean
-    totalAmount: Int
-    orderedPostcardsUUID: [OrderedPostcards!]!
-    postcards: [Postcard!]
-  }
 `;
+
+export default postcardDefs;

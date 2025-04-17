@@ -9,7 +9,6 @@ export const orderQueries: Resolvers["Query"] = {
       const orders = await fetchOrders();
       return orders;
     } catch (error) {
-      console.log(error);
       throw new GraphQLError(
         error instanceof Error ? error.message : String(error)
       );
