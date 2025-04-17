@@ -1,7 +1,11 @@
 import { GraphQLError } from "graphql";
 import { Resolvers } from "../../generated/graphql.ts";
 import { fetchPostcardsByIds } from "../actions/postcards.ts";
-import { fetchOrders, fetchSingleOrderById } from "../actions/orders.ts";
+import {
+  addANewOrder,
+  fetchOrders,
+  fetchSingleOrderById,
+} from "../actions/orders.ts";
 
 export const orderQueries: Resolvers["Query"] = {
   getAllOrders: async (_, __) => {
@@ -41,5 +45,23 @@ export const orderResolver: Resolvers = {
         );
       }
     },
+  },
+};
+
+export const orderMutations: Resolvers["Mutation"] = {
+  createNewOrder: async (_, { newOrderPayload }) => {
+    try {
+      const res = await addANewOrder(newOrderPayload);
+
+      return {
+        data: [res],
+        message: "Order places/added successfully",
+        success: true,
+      };
+    } catch (error) {
+      throw new GraphQLError(
+        error instanceof Error ? error.message : String(error)
+      );
+    }
   },
 };

@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   DocumentData,
   getDocs,
@@ -7,7 +8,11 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firestore/config.ts";
-import { Order } from "../../generated/graphql.ts";
+import {
+  CreateNewOrderMutationVariables,
+  Order,
+} from "../../generated/graphql.ts";
+import { v4 as uuid } from "uuid";
 
 export const ordersDataMapper = (
   docs: QuerySnapshot<DocumentData, DocumentData>
@@ -48,4 +53,24 @@ export const fetchSingleOrderById = async (id: string) => {
   const finalArray: Order[] = ordersDataMapper(docs);
 
   return finalArray;
+};
+
+export const addANewOrder = async (
+  payload: CreateNewOrderMutationVariables
+) => {
+  try {
+    const payloadObj: Order = {
+      ...payload,
+      orderID: uuid(),
+      orderedAt: Date.now().toString(),
+      orderStatus: "pending",
+    };
+
+    const collectionRef = collection(db, "postcard-orders");
+    await addDoc(collectionRef, payloadObj);
+
+    return { ...payloadObj };
+  } catch (error) {
+    throw new Error(error);
+  }
 };

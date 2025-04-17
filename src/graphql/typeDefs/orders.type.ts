@@ -6,8 +6,31 @@ const ordersDefs = gql`
     getOrderById(id: ID!): [Order!]
   }
 
+  type Mutation {
+    createNewOrder(
+      newOrderPayload: CreateNewOrderMutationVariables!
+    ): CreateNewOrderResponse!
+  }
+
+  input OrderedPostcardsPayload {
+    buyingQuantity: Int!
+    uuid: ID!
+  }
+
+  input CreateNewOrderMutationVariables {
+    paymentStatus: Boolean!
+    totalAmount: Int!
+    orderedPostcardsUUID: [OrderedPostcardsPayload!]!
+  }
+
+  type CreateNewOrderResponse {
+    data: [Order!]
+    message: String
+    success: Boolean
+  }
+
   type OrderedPostcards {
-    buyingQuantity: Int
+    buyingQuantity: Int!
     uuid: ID!
   }
 

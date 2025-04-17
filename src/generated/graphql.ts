@@ -16,10 +16,33 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type CreateNewOrderMutationVariables = {
+  orderedPostcardsUUID: Array<OrderedPostcardsPayload>;
+  paymentStatus: Scalars['Boolean']['input'];
+  totalAmount: Scalars['Int']['input'];
+};
+
+export type CreateNewOrderResponse = {
+  __typename?: 'CreateNewOrderResponse';
+  data?: Maybe<Array<Order>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+};
+
 export type FrameSize = {
   __typename?: 'FrameSize';
   x?: Maybe<Scalars['Int']['output']>;
   y?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  createNewOrder: CreateNewOrderResponse;
+};
+
+
+export type MutationCreateNewOrderArgs = {
+  newOrderPayload: CreateNewOrderMutationVariables;
 };
 
 export type Order = {
@@ -35,8 +58,13 @@ export type Order = {
 
 export type OrderedPostcards = {
   __typename?: 'OrderedPostcards';
-  buyingQuantity?: Maybe<Scalars['Int']['output']>;
+  buyingQuantity: Scalars['Int']['output'];
   uuid: Scalars['ID']['output'];
+};
+
+export type OrderedPostcardsPayload = {
+  buyingQuantity: Scalars['Int']['input'];
+  uuid: Scalars['ID']['input'];
 };
 
 export type Postcard = {
@@ -146,11 +174,15 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CreateNewOrderMutationVariables: CreateNewOrderMutationVariables;
+  CreateNewOrderResponse: ResolverTypeWrapper<CreateNewOrderResponse>;
   FrameSize: ResolverTypeWrapper<FrameSize>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Order: ResolverTypeWrapper<Order>;
   OrderedPostcards: ResolverTypeWrapper<OrderedPostcards>;
+  OrderedPostcardsPayload: OrderedPostcardsPayload;
   Postcard: ResolverTypeWrapper<Postcard>;
   ProductCategory: ProductCategory;
   Query: ResolverTypeWrapper<{}>;
@@ -160,20 +192,35 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
+  CreateNewOrderMutationVariables: CreateNewOrderMutationVariables;
+  CreateNewOrderResponse: CreateNewOrderResponse;
   FrameSize: FrameSize;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  Mutation: {};
   Order: Order;
   OrderedPostcards: OrderedPostcards;
+  OrderedPostcardsPayload: OrderedPostcardsPayload;
   Postcard: Postcard;
   Query: {};
   String: Scalars['String']['output'];
+};
+
+export type CreateNewOrderResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['CreateNewOrderResponse'] = ResolversParentTypes['CreateNewOrderResponse']> = {
+  data?: Resolver<Maybe<Array<ResolversTypes['Order']>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type FrameSizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['FrameSize'] = ResolversParentTypes['FrameSize']> = {
   x?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   y?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  createNewOrder?: Resolver<ResolversTypes['CreateNewOrderResponse'], ParentType, ContextType, RequireFields<MutationCreateNewOrderArgs, 'newOrderPayload'>>;
 };
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
@@ -188,7 +235,7 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type OrderedPostcardsResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrderedPostcards'] = ResolversParentTypes['OrderedPostcards']> = {
-  buyingQuantity?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  buyingQuantity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   uuid?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -214,7 +261,9 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type Resolvers<ContextType = any> = {
+  CreateNewOrderResponse?: CreateNewOrderResponseResolvers<ContextType>;
   FrameSize?: FrameSizeResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;
   OrderedPostcards?: OrderedPostcardsResolvers<ContextType>;
   Postcard?: PostcardResolvers<ContextType>;
