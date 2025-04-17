@@ -1,11 +1,6 @@
 import { gql } from "graphql-tag";
 
 const postcardDefs = gql`
-  type Query {
-    getAllPostcards: [Postcard!]
-    getPostcardByID(id: ID!): [Postcard!]
-  }
-
   enum ProductCategory {
     postcards
   }

@@ -55,7 +55,7 @@ export const orderMutations: Resolvers["Mutation"] = {
 
       return {
         data: [res],
-        message: "Order places/added successfully",
+        message: "Order placed/added successfully",
         success: true,
       };
     } catch (error) {
