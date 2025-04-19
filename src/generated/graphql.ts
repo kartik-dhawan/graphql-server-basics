@@ -29,6 +29,12 @@ export type CreateNewOrderResponse = {
   success?: Maybe<Scalars['Boolean']['output']>;
 };
 
+export type DeleteOrderResponse = {
+  __typename?: 'DeleteOrderResponse';
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type FrameSize = {
   __typename?: 'FrameSize';
   x?: Maybe<Scalars['Int']['output']>;
@@ -38,11 +44,17 @@ export type FrameSize = {
 export type Mutation = {
   __typename?: 'Mutation';
   createNewOrder: CreateNewOrderResponse;
+  deleteOrder: DeleteOrderResponse;
 };
 
 
 export type MutationCreateNewOrderArgs = {
   newOrderPayload: CreateNewOrderMutationVariables;
+};
+
+
+export type MutationDeleteOrderArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type Order = {
@@ -176,6 +188,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   CreateNewOrderMutationVariables: CreateNewOrderMutationVariables;
   CreateNewOrderResponse: ResolverTypeWrapper<CreateNewOrderResponse>;
+  DeleteOrderResponse: ResolverTypeWrapper<DeleteOrderResponse>;
   FrameSize: ResolverTypeWrapper<FrameSize>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
@@ -194,6 +207,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   CreateNewOrderMutationVariables: CreateNewOrderMutationVariables;
   CreateNewOrderResponse: CreateNewOrderResponse;
+  DeleteOrderResponse: DeleteOrderResponse;
   FrameSize: FrameSize;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
@@ -213,6 +227,12 @@ export type CreateNewOrderResponseResolvers<ContextType = any, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DeleteOrderResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['DeleteOrderResponse'] = ResolversParentTypes['DeleteOrderResponse']> = {
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type FrameSizeResolvers<ContextType = any, ParentType extends ResolversParentTypes['FrameSize'] = ResolversParentTypes['FrameSize']> = {
   x?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   y?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -221,6 +241,7 @@ export type FrameSizeResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createNewOrder?: Resolver<ResolversTypes['CreateNewOrderResponse'], ParentType, ContextType, RequireFields<MutationCreateNewOrderArgs, 'newOrderPayload'>>;
+  deleteOrder?: Resolver<ResolversTypes['DeleteOrderResponse'], ParentType, ContextType, RequireFields<MutationDeleteOrderArgs, 'id'>>;
 };
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
@@ -262,6 +283,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type Resolvers<ContextType = any> = {
   CreateNewOrderResponse?: CreateNewOrderResponseResolvers<ContextType>;
+  DeleteOrderResponse?: DeleteOrderResponseResolvers<ContextType>;
   FrameSize?: FrameSizeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;

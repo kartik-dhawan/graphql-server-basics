@@ -3,6 +3,7 @@ import { Resolvers } from "../../generated/graphql.ts";
 import { fetchPostcardsByIds } from "../actions/postcards.ts";
 import {
   addANewOrder,
+  deleteOrderById,
   fetchOrders,
   fetchSingleOrderById,
 } from "../actions/orders.ts";
@@ -63,5 +64,24 @@ export const orderMutations: Resolvers["Mutation"] = {
         error instanceof Error ? error.message : String(error)
       );
     }
+  },
+
+  deleteOrder: async (_, { id }) => {
+    if (!id) {
+      throw new GraphQLError("Order ID is required");
+    }
+
+    try {
+      await deleteOrderById(id);
+    } catch (error) {
+      throw new GraphQLError(
+        error instanceof Error ? error.message : String(error)
+      );
+    }
+
+    return {
+      success: true,
+      message: "Order deleted successfully",
+    };
   },
 };

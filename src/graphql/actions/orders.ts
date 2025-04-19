@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   DocumentData,
   getDocs,
   query,
@@ -73,4 +74,17 @@ export const addANewOrder = async (
   } catch (error) {
     throw new Error(error);
   }
+};
+
+export const deleteOrderById = async (id: string) => {
+  const collectionRef = collection(db, "postcard-orders");
+
+  const q = query(collectionRef, where("orderID", "==", id));
+  const docs = await getDocs(q);
+
+  if (!docs.docs[0]) {
+    throw new Error("No order found with this ID");
+  }
+
+  return await deleteDoc(docs.docs[0].ref);
 };

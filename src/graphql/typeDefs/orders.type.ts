@@ -32,6 +32,11 @@ const ordersDefs = gql`
     orderedPostcardsUUID: [OrderedPostcards!]!
     postcards: [Postcard!]
   }
+
+  type DeleteOrderResponse {
+    message: String
+    success: Boolean!
+  }
 `;
 
 export default ordersDefs;
