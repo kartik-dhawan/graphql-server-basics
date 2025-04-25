@@ -60,13 +60,20 @@ export type MutationDeleteOrderArgs = {
 export type Order = {
   __typename?: 'Order';
   orderID: Scalars['ID']['output'];
-  orderStatus?: Maybe<Scalars['String']['output']>;
+  orderStatus?: Maybe<OrderStatus>;
   orderedAt?: Maybe<Scalars['String']['output']>;
   orderedPostcardsUUID: Array<OrderedPostcards>;
   paymentStatus?: Maybe<Scalars['Boolean']['output']>;
   postcards?: Maybe<Array<Postcard>>;
   totalAmount?: Maybe<Scalars['Int']['output']>;
 };
+
+export enum OrderStatus {
+  Delivered = 'DELIVERED',
+  InTransit = 'IN_TRANSIT',
+  PendingApproval = 'PENDING_APPROVAL',
+  Shipped = 'SHIPPED'
+}
 
 export type OrderedPostcards = {
   __typename?: 'OrderedPostcards';
@@ -194,6 +201,7 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Order: ResolverTypeWrapper<Order>;
+  OrderStatus: OrderStatus;
   OrderedPostcards: ResolverTypeWrapper<OrderedPostcards>;
   OrderedPostcardsPayload: OrderedPostcardsPayload;
   Postcard: ResolverTypeWrapper<Postcard>;
@@ -246,7 +254,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
   orderID?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  orderStatus?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  orderStatus?: Resolver<Maybe<ResolversTypes['OrderStatus']>, ParentType, ContextType>;
   orderedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   orderedPostcardsUUID?: Resolver<Array<ResolversTypes['OrderedPostcards']>, ParentType, ContextType>;
   paymentStatus?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;

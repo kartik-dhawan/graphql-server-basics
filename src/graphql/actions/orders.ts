@@ -12,6 +12,7 @@ import { db } from "../../firestore/config.ts";
 import {
   CreateNewOrderMutationVariables,
   Order,
+  OrderStatus,
 } from "../../generated/graphql.ts";
 import { v4 as uuid } from "uuid";
 
@@ -64,7 +65,7 @@ export const addANewOrder = async (
       ...payload,
       orderID: uuid(),
       orderedAt: Date.now().toString(),
-      orderStatus: "pending",
+      orderStatus: OrderStatus.PendingApproval,
     };
 
     const collectionRef = collection(db, "postcard-orders");

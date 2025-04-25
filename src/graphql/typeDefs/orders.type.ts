@@ -12,6 +12,13 @@ const ordersDefs = gql`
     orderedPostcardsUUID: [OrderedPostcardsPayload!]!
   }
 
+  enum OrderStatus {
+    PENDING_APPROVAL
+    SHIPPED
+    IN_TRANSIT
+    DELIVERED
+  }
+
   type CreateNewOrderResponse {
     data: [Order!]
     message: String
@@ -26,7 +33,7 @@ const ordersDefs = gql`
   type Order {
     orderID: ID!
     orderedAt: String
-    orderStatus: String
+    orderStatus: OrderStatus
     paymentStatus: Boolean
     totalAmount: Int
     orderedPostcardsUUID: [OrderedPostcards!]!
