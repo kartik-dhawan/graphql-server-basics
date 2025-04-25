@@ -34,8 +34,8 @@ export const orderQueries: Resolvers["Query"] = {
 export const orderResolver: Resolvers = {
   Order: {
     postcards: async (parent) => {
-      const { orderedPostcardsUUID } = parent;
-      const ids = orderedPostcardsUUID.map((item) => item.uuid);
+      const { postcards } = parent;
+      const ids = postcards.map((item) => item.uuid);
 
       try {
         const postcards = await fetchPostcardsByIds(ids);

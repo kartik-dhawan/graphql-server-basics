@@ -62,7 +62,6 @@ export type Order = {
   orderID: Scalars['ID']['output'];
   orderStatus?: Maybe<OrderStatus>;
   orderedAt?: Maybe<Scalars['String']['output']>;
-  orderedPostcardsUUID: Array<OrderedPostcards>;
   paymentStatus?: Maybe<Scalars['Boolean']['output']>;
   postcards?: Maybe<Array<Postcard>>;
   totalAmount?: Maybe<Scalars['Int']['output']>;
@@ -256,7 +255,6 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
   orderID?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   orderStatus?: Resolver<Maybe<ResolversTypes['OrderStatus']>, ParentType, ContextType>;
   orderedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  orderedPostcardsUUID?: Resolver<Array<ResolversTypes['OrderedPostcards']>, ParentType, ContextType>;
   paymentStatus?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   postcards?: Resolver<Maybe<Array<ResolversTypes['Postcard']>>, ParentType, ContextType>;
   totalAmount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;

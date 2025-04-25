@@ -12,7 +12,9 @@ import { db } from "../../firestore/config.ts";
 import {
   CreateNewOrderMutationVariables,
   Order,
+  OrderedPostcardsPayload,
   OrderStatus,
+  Postcard,
 } from "../../generated/graphql.ts";
 import { v4 as uuid } from "uuid";
 
@@ -22,14 +24,20 @@ export const ordersDataMapper = (
   const finalArray: Order[] = docs.docs.map((doc) => {
     const record = doc.data();
 
+    const uuidsArray: Postcard[] = record.orderedPostcardsUUID.map(
+      (item: OrderedPostcardsPayload) => ({
+        uuid: item.uuid,
+      })
+    );
+
     return {
-      orderedPostcardsUUID: record.orderedPostcardsUUID,
       orderID: record.orderID,
       __typename: "Order",
       orderedAt: record.orderedAt,
       orderStatus: record.orderStatus,
       paymentStatus: record.paymentStatus,
       totalAmount: record.totalAmount,
+      postcards: uuidsArray,
     };
   });
 

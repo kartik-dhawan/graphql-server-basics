@@ -36,7 +36,6 @@ const ordersDefs = gql`
     orderStatus: OrderStatus
     paymentStatus: Boolean
     totalAmount: Int
-    orderedPostcardsUUID: [OrderedPostcards!]!
     postcards: [Postcard!]
   }
 
