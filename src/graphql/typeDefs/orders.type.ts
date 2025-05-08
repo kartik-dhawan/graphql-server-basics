@@ -43,6 +43,13 @@ const ordersDefs = gql`
     message: String
     success: Boolean!
   }
+
+  input EditOrderPayload {
+    orderId: ID!
+    orderStatus: OrderStatus
+    paymentStatus: Boolean
+    totalAmount: Int
+  }
 `;
 
 export default ordersDefs;

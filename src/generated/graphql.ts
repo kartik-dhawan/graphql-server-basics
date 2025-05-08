@@ -35,6 +35,13 @@ export type DeleteOrderResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type EditOrderPayload = {
+  orderId: Scalars['ID']['input'];
+  orderStatus?: InputMaybe<OrderStatus>;
+  paymentStatus?: InputMaybe<Scalars['Boolean']['input']>;
+  totalAmount?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type FrameSize = {
   __typename?: 'FrameSize';
   x?: Maybe<Scalars['Int']['output']>;
@@ -45,6 +52,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createNewOrder: CreateNewOrderResponse;
   deleteOrder: DeleteOrderResponse;
+  editAnOrder?: Maybe<CreateNewOrderResponse>;
 };
 
 
@@ -55,6 +63,11 @@ export type MutationCreateNewOrderArgs = {
 
 export type MutationDeleteOrderArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationEditAnOrderArgs = {
+  editOrderPayload: EditOrderPayload;
 };
 
 export type Order = {
@@ -195,6 +208,7 @@ export type ResolversTypes = {
   CreateNewOrderMutationVariables: CreateNewOrderMutationVariables;
   CreateNewOrderResponse: ResolverTypeWrapper<CreateNewOrderResponse>;
   DeleteOrderResponse: ResolverTypeWrapper<DeleteOrderResponse>;
+  EditOrderPayload: EditOrderPayload;
   FrameSize: ResolverTypeWrapper<FrameSize>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
@@ -215,6 +229,7 @@ export type ResolversParentTypes = {
   CreateNewOrderMutationVariables: CreateNewOrderMutationVariables;
   CreateNewOrderResponse: CreateNewOrderResponse;
   DeleteOrderResponse: DeleteOrderResponse;
+  EditOrderPayload: EditOrderPayload;
   FrameSize: FrameSize;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
@@ -249,6 +264,7 @@ export type FrameSizeResolvers<ContextType = any, ParentType extends ResolversPa
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createNewOrder?: Resolver<ResolversTypes['CreateNewOrderResponse'], ParentType, ContextType, RequireFields<MutationCreateNewOrderArgs, 'newOrderPayload'>>;
   deleteOrder?: Resolver<ResolversTypes['DeleteOrderResponse'], ParentType, ContextType, RequireFields<MutationDeleteOrderArgs, 'id'>>;
+  editAnOrder?: Resolver<Maybe<ResolversTypes['CreateNewOrderResponse']>, ParentType, ContextType, RequireFields<MutationEditAnOrderArgs, 'editOrderPayload'>>;
 };
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {

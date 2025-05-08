@@ -4,6 +4,7 @@ import { fetchPostcardsByIds } from "../actions/postcards.ts";
 import {
   addANewOrder,
   deleteOrderById,
+  editAnOrder,
   fetchOrders,
   fetchSingleOrderById,
 } from "../actions/orders.ts";
@@ -83,5 +84,37 @@ export const orderMutations: Resolvers["Mutation"] = {
       success: true,
       message: "Order deleted successfully",
     };
+  },
+
+  editAnOrder: async (_, { editOrderPayload }) => {
+    const { orderId, orderStatus, paymentStatus } = editOrderPayload;
+
+    if (!orderId) {
+      throw new GraphQLError("Order ID is required");
+    }
+
+    try {
+      const orderRec = await fetchSingleOrderById(orderId);
+      if (!orderRec[0]) {
+        throw new GraphQLError("No order found with this ID");
+      }
+
+      await editAnOrder(editOrderPayload);
+      return {
+        data: [
+          {
+            ...orderRec[0],
+            orderStatus,
+            paymentStatus,
+          },
+        ],
+        success: true,
+        message: "Order updated successfully",
+      };
+    } catch (error) {
+      throw new GraphQLError(
+        error instanceof Error ? error.message : String(error)
+      );
+    }
   },
 };

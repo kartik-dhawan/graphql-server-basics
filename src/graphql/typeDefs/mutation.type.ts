@@ -6,6 +6,8 @@ const mutationDefs = gql`
       newOrderPayload: CreateNewOrderMutationVariables!
     ): CreateNewOrderResponse!
 
+    editAnOrder(editOrderPayload: EditOrderPayload!): CreateNewOrderResponse
+
     deleteOrder(id: ID!): DeleteOrderResponse!
   }
 `;

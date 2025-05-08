@@ -2,15 +2,18 @@ import {
   addDoc,
   collection,
   deleteDoc,
+  doc,
   DocumentData,
   getDocs,
   query,
   QuerySnapshot,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../../firestore/config.ts";
 import {
   CreateNewOrderMutationVariables,
+  EditOrderPayload,
   Order,
   OrderedPostcardsPayload,
   OrderStatus,
@@ -96,4 +99,23 @@ export const deleteOrderById = async (id: string) => {
   }
 
   return await deleteDoc(docs.docs[0].ref);
+};
+
+export const editAnOrder = async (payload: EditOrderPayload) => {
+  const { orderId, orderStatus, paymentStatus, totalAmount } = payload;
+
+  const collectionRef = collection(db, "postcard-orders");
+
+  const q = query(collectionRef, where("orderID", "==", orderId));
+  const docs = await getDocs(q);
+
+  if (!docs.docs[0]) {
+    throw new Error("No order found with this ID");
+  }
+
+  return await updateDoc(docs.docs[0].ref, {
+    orderStatus,
+    paymentStatus,
+    totalAmount,
+  });
 };
