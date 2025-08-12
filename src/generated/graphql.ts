@@ -53,6 +53,7 @@ export type Mutation = {
   createNewOrder: CreateNewOrderResponse;
   deleteOrder: DeleteOrderResponse;
   editAnOrder?: Maybe<CreateNewOrderResponse>;
+  shortenTheUrl: Scalars['String']['output'];
 };
 
 
@@ -68,6 +69,11 @@ export type MutationDeleteOrderArgs = {
 
 export type MutationEditAnOrderArgs = {
   editOrderPayload: EditOrderPayload;
+};
+
+
+export type MutationShortenTheUrlArgs = {
+  url: Scalars['String']['input'];
 };
 
 export type Order = {
@@ -265,6 +271,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createNewOrder?: Resolver<ResolversTypes['CreateNewOrderResponse'], ParentType, ContextType, RequireFields<MutationCreateNewOrderArgs, 'newOrderPayload'>>;
   deleteOrder?: Resolver<ResolversTypes['DeleteOrderResponse'], ParentType, ContextType, RequireFields<MutationDeleteOrderArgs, 'id'>>;
   editAnOrder?: Resolver<Maybe<ResolversTypes['CreateNewOrderResponse']>, ParentType, ContextType, RequireFields<MutationEditAnOrderArgs, 'editOrderPayload'>>;
+  shortenTheUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationShortenTheUrlArgs, 'url'>>;
 };
 
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {

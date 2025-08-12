@@ -9,6 +9,8 @@ const mutationDefs = gql`
     editAnOrder(editOrderPayload: EditOrderPayload!): CreateNewOrderResponse
 
     deleteOrder(id: ID!): DeleteOrderResponse!
+
+    shortenTheUrl(url: String!): String!
   }
 `;
 
