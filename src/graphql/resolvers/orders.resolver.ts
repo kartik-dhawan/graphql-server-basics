@@ -1,13 +1,15 @@
 import { GraphQLError } from "graphql";
 import { Resolvers } from "../../generated/graphql.ts";
 import { supabaseAdmin } from "../../supabase/config.ts";
-import { isValidHttpUrl } from "../actions/utils.ts";
+import {
+  BASE_URL,
+  isValidHttpUrl,
+  SUPABASE_ERROR_CODES,
+} from "../actions/utils.ts";
 import { nanoid } from "nanoid";
 
 export const orderMutations: Resolvers["Mutation"] = {
   shortenTheUrl: async (_, { url: longUrl }) => {
-    const BASE_URL = process.env.BASE_URL || "http://localhost:3002/";
-
     if (!isValidHttpUrl(longUrl)) {
       throw new GraphQLError("Invalid URL", {
         extensions: { code: "BAD_USER_INPUT" },
@@ -21,32 +23,41 @@ export const orderMutations: Resolvers["Mutation"] = {
       .eq("long_url", longUrl)
       .single();
 
-    if (selectError && selectError.code !== "PGRST116") {
-      // PGRST116 = no rows found
+    if (
+      selectError &&
+      selectError.code !== SUPABASE_ERROR_CODES.NO_ROWS_FOUND
+    ) {
+      // PGRST116 = no rows found (According to Supabase docs)
       throw new GraphQLError("Supabase select failed", {
         extensions: { code: "SUPABASE_ERROR", details: selectError.message },
       });
     }
 
     if (existing) {
-      // Already exists - return the old short URL
+      // if it already exists - return the old short URL
       return `${BASE_URL}${existing.id}`;
     }
 
-    // Generate a new short ID
+    // else generate a new short ID
     const id = nanoid(8);
 
-    // Insert new record
+    // insert new record with new shortened & long url both
+    // id -> short url
+    // long_url -> old url
+    // used short url as ID & primary key to catch duplicacy
     const { error: insertError } = await supabaseAdmin
       .from("urls")
       .insert({ id, long_url: longUrl, created_at: new Date().toISOString() });
 
+    // here we can catch the duplicacy or primary key error to handle the case of the generated key not being unique
+    // if we get that error, simply regenerate the key & try again
     if (insertError) {
       throw new GraphQLError("Supabase insert failed", {
         extensions: { code: "SUPABASE_ERROR", details: insertError.message },
       });
     }
 
+    // return the URL as string
     return `${BASE_URL}${id}`;
   },
 };

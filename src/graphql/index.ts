@@ -21,40 +21,45 @@ const redis = new Redis({
 
 // Function to start the server
 const startServer = async () => {
-  const app = express(); // Creating an instance of an Express application
+  const app = express(); // create an instance of an express application
 
-  // Middleware to parse JSON request bodies
+  // middleware to parse JSON request bodies
   app.use(express.json());
 
-  // Creating a new Apollo Server instance with type definitions and resolvers
+  // creates a new Apollo Server instance with type definitions and resolvers
   const server = new ApolloServer({
     typeDefs: typeDefs,
     resolvers: resolvers,
   });
 
   try {
-    await server.start(); // Starting the Apollo Server
+    await server.start(); // start the Apollo Server
 
-    // Setting up the GraphQL endpoint with middleware
+    // set up the GraphQL endpoint with middleware for apollo-client
     app.use(
       "/graphql",
       expressMiddleware(server, {
         context: async ({ req, res }) => {
-          return { req, res }; // Returning the request and response objects in the context
+          return { req, res };
         },
       })
     );
 
-    // Redirect handler for url shortener
+    // redirect handler for url shortener
+    // whenever the URL is hit with /{key} -> this block catches that
     app.get("/:id", async (req, res) => {
       const id = req.params.id;
 
+      // printing timestamp to test latency
       console.log(Date.now(), "-------Checking Redis-------");
 
+      // get the long url from cache (it could return undefined/null if nothing exists)
       let longUrl = await redis.get(`url:${id}`);
 
       console.log({ longUrl }, "-------Checking Redis-------");
 
+      // if we don't find cached URL from redis
+      // then fetch from DB on the basis of the key
       if (!longUrl) {
         const { data, error } = await supabaseAdmin
           .from("urls")
@@ -68,10 +73,14 @@ const startServer = async () => {
 
         longUrl = data.long_url;
 
+        // before leaving set the generated short key in redis for future use & reducing the latency then
         await redis.set(`url:${id}`, longUrl, "EX", 86400);
       }
 
+      // printing timestamp to test latency
       console.log(Date.now(), "-------Checking Redis-------");
+
+      // redirect to the ling url with low latency because of redis
       res.redirect(301, longUrl);
     });
 
