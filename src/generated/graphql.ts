@@ -23,6 +23,7 @@ export type Mutation = {
 
 
 export type MutationShortenTheUrlArgs = {
+  expiration?: InputMaybe<Scalars['String']['input']>;
   url: Scalars['String']['input'];
 };
 

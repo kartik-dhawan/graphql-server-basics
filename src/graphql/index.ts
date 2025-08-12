@@ -63,7 +63,7 @@ const startServer = async () => {
       if (!longUrl) {
         const { data, error } = await supabaseAdmin
           .from("urls")
-          .select("long_url")
+          .select("long_url, expiry_at")
           .eq("id", req.params.id)
           .single();
 
@@ -71,10 +71,16 @@ const startServer = async () => {
           return res.status(404).send("Not found");
         }
 
-        longUrl = data.long_url;
+        if (new Date(data.expiry_at).getTime() > Date.now()) {
+          longUrl = data.long_url;
 
-        // before leaving set the generated short key in redis for future use & reducing the latency then
-        await redis.set(`url:${id}`, longUrl, "EX", 86400);
+          // before leaving set the generated short key in redis for future use & reducing the latency then
+          await redis.set(`url:${id}`, longUrl, "EX", 86400);
+        } else {
+          // expired
+          // if its expired, then show it to the client
+          res.status(410).json({ error: "Link expired" });
+        }
       }
 
       // printing timestamp to test latency

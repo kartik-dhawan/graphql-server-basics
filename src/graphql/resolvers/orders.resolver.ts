@@ -9,7 +9,7 @@ import {
 import { nanoid } from "nanoid";
 
 export const orderMutations: Resolvers["Mutation"] = {
-  shortenTheUrl: async (_, { url: longUrl }) => {
+  shortenTheUrl: async (_, { url: longUrl, expiration }) => {
     if (!isValidHttpUrl(longUrl)) {
       throw new GraphQLError("Invalid URL", {
         extensions: { code: "BAD_USER_INPUT" },
@@ -45,9 +45,12 @@ export const orderMutations: Resolvers["Mutation"] = {
     // id -> short url
     // long_url -> old url
     // used short url as ID & primary key to catch duplicacy
-    const { error: insertError } = await supabaseAdmin
-      .from("urls")
-      .insert({ id, long_url: longUrl, created_at: new Date().toISOString() });
+    const { error: insertError } = await supabaseAdmin.from("urls").insert({
+      id,
+      long_url: longUrl,
+      created_at: new Date().toISOString(),
+      expiry_at: expiration, // later on, we can run a cron to remove all the expired records
+    });
 
     // here we can catch the duplicacy or primary key error to handle the case of the generated key not being unique
     // if we get that error, simply regenerate the key & try again
